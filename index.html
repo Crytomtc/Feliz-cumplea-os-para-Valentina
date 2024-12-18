@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Feliz Cumpleaños, Valentina!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      display: none; /* Se muestra solo si es el 22/12/2024 o después */
+      animation: fadeIn 2s ease-in-out;
+    }
+    .container img {
+      max-width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .container h1 {
+      font-size: 3em;
+      color: #ff6f61;
+      margin: 10px 0;
+    }
+    .container p {
+      font-size: 1.5em;
+      color: #333;
+      margin: 10px 0;
+    }
+    .yellow-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: yellow;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .yellow-screen h1 {
+      font-size: 2.5em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .yellow-screen p {
+      font-size: 1.2em;
+      color: #444;
+    }
+    @media (max-width: 768px) {
+      .container h1 {
+        font-size: 2.5em;
+      }
+      .container p {
+        font-size: 1.2em;
+      }
+      .yellow-screen h1 {
+        font-size: 2em;
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="yellow-screen" id="yellow-screen">
+    <h1>¡Hola, Valentina!</h1>
+    <p>Aún no es tu cumpleaños, pero falta poco...</p>
+    <p id="countdown"></p>
+  </div>
+
+  <div class="container" id="birthday-container">
+    <h1>¡Feliz Cumpleaños, Valentina!</h1>
+    <p>Hoy celebramos un día especial: ¡tus 12 años! Espero que este día esté lleno de amor, risas y momentos inolvidables.</p>
+    <img src="ima.png" alt="Imagen de cumpleaños">
+    <p>De parte de Luis Mario:</p>
+    <p>"Te extraño. Fuiste más que una simple novia para mí... fuiste mi *click*. Siempre tendrás un lugar especial en mi corazón."</p>
+  </div>
+
+  <script>
+    // URL del API de hora mundial para Cuba
+    const apiUrl = "http://worldtimeapi.org/api/timezone/America/Havana";
+
+    // Fecha del cumpleaños
+    const birthday = new Date("2024-12-22T00:00:00");
+
+    const yellowScreen = document.getElementById("yellow-screen");
+    const birthdayContainer = document.getElementById("birthday-container");
+    const countdownElement = document.getElementById("countdown");
+
+    // Obtener fecha desde el API
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const currentDate = new Date(data.datetime);
+
+        // Comprobar si hoy es el cumpleaños o después
+        if (currentDate >= birthday) {
+          yellowScreen.style.display = "none"; // Ocultar pantalla amarilla
+          birthdayContainer.style.display = "block"; // Mostrar contenido de cumpleaños
+        } else {
+          // Calcular los días que faltan
+          const diffTime = birthday - currentDate;
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+          countdownElement.textContent = `Faltan ${diffDays} día(s) para tu cumpleaños. ¡Prepárate!`;
+
+          yellowScreen.style.display = "flex"; // Mantener pantalla amarilla visible
+          birthdayContainer.style.display = "none"; // Ocultar contenido de cumpleaños
+        }
+      })
+      .catch(error => {
+        console.error("Error al obtener la fecha del servidor:", error);
+        yellowScreen.innerHTML = "<h1>Error al conectar con el servidor. Intenta más tarde.</h1>";
+      });
+  </script>
+</body>
+</html>
