@@ -94,8 +94,8 @@
   </div>
 
   <script>
-    // URL del API de hora mundial para Cuba
-    const apiUrl = "http://worldtimeapi.org/api/timezone/America/Havana";
+    // URL del API de hora mundial (seguro con HTTPS)
+    const apiUrl = "https://timeapi.io/api/Time/current/zone?timeZone=America/Havana";
 
     // Fecha del cumpleaños
     const birthday = new Date("2024-12-22T00:00:00");
@@ -108,7 +108,7 @@
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        const currentDate = new Date(data.datetime);
+        const currentDate = new Date(data.dateTime); // Usamos el campo dateTime de la API
 
         // Comprobar si hoy es el cumpleaños o después
         if (currentDate >= birthday) {
